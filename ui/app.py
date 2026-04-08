@@ -1,9 +1,6 @@
 import customtkinter as ctk
 
-from algorithms.caesar import encrypt as caesar_encrypt, decrypt as caesar_decrypt, generate_key as caesar_generate
-from algorithms.mono_alphabetic import encrypt as mono_alphabetic_encrypt, decrypt as mono_alphabetic_decrypt, generate_key as mono_alphabetic_generate
-from algorithms.playfair import encrypt as playfair_encrypt, decrypt as playfair_decrypt
-from algorithms.hill import encrypt as hill_encrypt, decrypt as hill_decrypt
+from config import ALGORITHMS
 
 ctk.set_appearance_mode("dark")
 ctk.set_default_color_theme("green")
@@ -24,26 +21,7 @@ class CryptoApp(ctk.CTk):
         self.key_entry = None
         self.output_text = None
 
-        self.algorithms = {
-            "Caesar": {
-                "encrypt": caesar_encrypt,
-                "decrypt": caesar_decrypt,
-                "generate": caesar_generate
-            },
-            "Mono-alphabetic": {
-                "encrypt": mono_alphabetic_encrypt,
-                "decrypt": mono_alphabetic_decrypt,
-                "generate": mono_alphabetic_generate
-            },
-            "Playfair": {
-                "encrypt": playfair_encrypt,
-                "decrypt": playfair_decrypt
-            },
-            "Hill": {
-                "encrypt": hill_encrypt,
-                "decrypt": hill_decrypt
-            },
-        }
+        self.algorithms = ALGORITHMS
 
         self.create_widgets()
 
@@ -162,7 +140,6 @@ class CryptoApp(ctk.CTk):
         self.key_entry.insert(0, str(key))
 
     def swap_text(self):
-        input_text = self.input_text.get("1.0", "end").strip()
         output_text = self.output_text.get("1.0", "end").strip()
 
         self.input_text.delete("1.0", "end")
