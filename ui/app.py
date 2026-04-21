@@ -192,6 +192,18 @@ class CryptoApp(ctk.CTk):
         if algorithm == "Hill":
             self.render_hill_matrix_input()
 
+        elif algorithm == "Playfair":
+            self.key_entry = ctk.CTkEntry(self.key_dynamic, placeholder_text="Enter keyword")
+            self.key_entry.pack(fill="x", side="left", expand=True)
+
+            view_btn = ctk.CTkButton(
+                self.key_dynamic,
+                text="View Matrix",
+                width=80,
+                command=self.show_playfair_matrix
+            )
+            view_btn.pack(side="right", padx=5)
+
         else:
             self.key_entry = ctk.CTkEntry(
                 self.key_dynamic,
@@ -257,6 +269,25 @@ class CryptoApp(ctk.CTk):
             for j in range(size):
                 self.matrix_entries[i][j].delete(0, "end")
                 self.matrix_entries[i][j].insert(0, str(matrix[i][j]))
+
+    def show_playfair_matrix(self):
+        key = self.key_entry.get()
+        if not key:
+            return
+
+        from algorithms.playfair import generate_matrix
+        matrix = generate_matrix(key)
+
+        top = ctk.CTkToplevel(self)
+        top.title("Playfair Matrix")
+        top.resizable(False, False)
+        top.attributes("-topmost", True)
+
+        for i, row in enumerate(matrix):
+            for j, char in enumerate(row):
+                label = ctk.CTkLabel(top, text=char, font=("JetBrains Mono", 18, "bold"),
+                                     width=40, height=40, fg_color="#121612", corner_radius=5)
+                label.grid(row=i, column=j, padx=5, pady=5)
 
     def run_analysis(self):
         input_val = self.input_text.get("1.0", "end")
